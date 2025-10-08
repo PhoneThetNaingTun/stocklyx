@@ -33,7 +33,10 @@ export const StoreTable = () => {
         <Input
           placeholder="Filter store name..."
           value={filter.store_name}
-          onChange={(e) => setFilter({ store_name: e.target.value })}
+          onChange={(e) => {
+            setFilter({ store_name: e.target.value });
+            setPagination((prev) => ({ ...prev, pageIndex: 0 }));
+          }}
           className="mb-4"
         />
       </div>

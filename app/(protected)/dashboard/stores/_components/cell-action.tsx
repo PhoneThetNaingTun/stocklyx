@@ -1,4 +1,5 @@
 import { DeleteDialog } from "@/components/delete-dialog";
+import { showToast } from "@/components/toaster";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -7,6 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
+import { useDeleteStoreMutation } from "@/store/Apis/storeApi";
 import { Store } from "@/types/store";
 import { EllipsisVertical, Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
@@ -19,8 +21,29 @@ interface Props {
 export const StoreCellAction = ({ data }: Props) => {
   const [open, setOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
-
-  const handleDelete = async () => {};
+  const [DeleteStore, { isLoading }] = useDeleteStoreMutation();
+  const handleDelete = async () => {
+    try {
+      const responseData = await DeleteStore({ id: data.id }).unwrap();
+      showToast({
+        title: responseData.message,
+        type: "success",
+      });
+      setDeleteOpen(false);
+    } catch (error: any) {
+      if (error?.data?.message) {
+        showToast({
+          title: error.data.message[0],
+          type: "error",
+        });
+      } else {
+        showToast({
+          title: "Something went wrong!",
+          type: "error",
+        });
+      }
+    }
+  };
 
   return (
     <div>
@@ -48,7 +71,7 @@ export const StoreCellAction = ({ data }: Props) => {
         open={deleteOpen}
         setOpen={setDeleteOpen}
         title="Store"
-        isLoading={false}
+        isLoading={isLoading}
         handleDelete={handleDelete}
       />
     </div>
