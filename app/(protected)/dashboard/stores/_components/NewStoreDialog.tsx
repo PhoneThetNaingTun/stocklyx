@@ -62,7 +62,7 @@ export const NewStoreDialog = () => {
           <CircleFadingPlus className="w-4 h-4" /> New Store
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-h-screen overflow-y-scroll no-scrollbar">
         <DialogHeader>
           <DialogTitle>New Store</DialogTitle>
         </DialogHeader>

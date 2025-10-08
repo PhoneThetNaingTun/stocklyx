@@ -32,7 +32,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { IconChevronDown, IconLayoutColumns } from "@tabler/icons-react";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -40,6 +40,8 @@ interface DataTableProps<TData, TValue> {
   setPagination: Dispatch<SetStateAction<PaginationState>>;
   pagination: PaginationState;
   totalPages: number;
+  resetSelection?: boolean;
+  onRowSelectionChange?: (rows: TData[]) => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -48,10 +50,13 @@ export function DataTable<TData, TValue>({
   setPagination,
   totalPages,
   pagination,
+  resetSelection,
+  onRowSelectionChange,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable({
     data,
@@ -62,17 +67,38 @@ export function DataTable<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
+    onRowSelectionChange: setRowSelection,
     onColumnVisibilityChange: setColumnVisibility,
     state: {
       sorting,
       columnFilters,
       columnVisibility,
       pagination,
+      rowSelection,
     },
     onPaginationChange: setPagination,
     pageCount: totalPages,
     manualPagination: true,
   });
+
+  useEffect(() => {
+    setRowSelection({});
+  }, [pagination.pageIndex, pagination.pageSize]);
+
+  useEffect(() => {
+    if (onRowSelectionChange) {
+      const selectedRows = table
+        .getSelectedRowModel()
+        .flatRows.map((row) => row.original);
+      onRowSelectionChange(selectedRows);
+    }
+  }, [rowSelection, onRowSelectionChange, table]);
+
+  useEffect(() => {
+    if (resetSelection) {
+      setRowSelection({});
+    }
+  }, [resetSelection]);
 
   return (
     <div>
@@ -107,6 +133,7 @@ export function DataTable<TData, TValue>({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+      <div></div>
       <div className="overflow-hidden rounded-md border">
         <Table>
           <TableHeader>

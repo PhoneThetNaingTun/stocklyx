@@ -1,6 +1,6 @@
 import * as z from "zod";
 
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+export const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export const loginSchema = z.object({
   email: z.string().regex(emailRegex, "Invalid email format!"),
   password: z

@@ -32,6 +32,14 @@ export const storeApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Store"],
     }),
+    deleteManyStore: builder.mutation({
+      query: (payload) => ({
+        url: `store/delete-multiple`,
+        method: "DELETE",
+        body: payload,
+      }),
+      invalidatesTags: ["Store"],
+    }),
   }),
 });
 
@@ -40,4 +48,5 @@ export const {
   useCreateStoreMutation,
   useUpdateStoreMutation,
   useDeleteStoreMutation,
+  useDeleteManyStoreMutation,
 } = storeApi;

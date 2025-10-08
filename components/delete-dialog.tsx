@@ -33,7 +33,7 @@ export const DeleteDialog = ({
           </DialogTitle>
           <DialogDescription className="text-red-500">
             This action cannot be undone! This will delete all the data
-            associate with this {title}!
+            associate with selected {title}!
           </DialogDescription>
         </DialogHeader>
         <div className="flex items-center gap-4 justify-between">

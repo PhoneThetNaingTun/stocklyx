@@ -32,7 +32,7 @@ export const StoreForm = ({
       {" "}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)}>
-          <FieldGroup>
+          <FieldGroup className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Field>
               <FormField
                 control={form.control}
@@ -63,6 +63,82 @@ export const StoreForm = ({
                       <Input
                         {...field}
                         placeholder="eg:1st Floor, House 1"
+                        disabled={isLoading}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </Field>
+            <Field>
+              <FormField
+                control={form.control}
+                name="store_email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Store Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="eg:example@gmail.com"
+                        disabled={isLoading}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </Field>
+            <Field>
+              <FormField
+                control={form.control}
+                name="store_phone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Store Phone</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="eg:+1234567890"
+                        disabled={isLoading}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </Field>
+            <Field>
+              <FormField
+                control={form.control}
+                name="store_city"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Store City</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="eg:Mandalay"
+                        disabled={isLoading}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </Field>
+            <Field>
+              <FormField
+                control={form.control}
+                name="store_country"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Store Country</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="eg:Myanmar"
                         disabled={isLoading}
                       />
                     </FormControl>

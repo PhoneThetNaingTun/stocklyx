@@ -26,16 +26,12 @@ export const UpdateStoreDialog = ({ initialValue, open, setOpen }: Prop) => {
 
   const storeForm = useForm<StoreSchema>({
     resolver: zodResolver(storeSchema),
-    defaultValues: {
-      store_name: initialValue.store_name,
-      store_location: initialValue.store_location,
-    },
+    defaultValues: initialValue,
     mode: "onBlur",
   });
   useEffect(() => {
     storeForm.reset({
-      store_name: initialValue.store_name,
-      store_location: initialValue.store_location,
+      ...initialValue,
     });
   }, [initialValue, storeForm]);
   const handleSubmit = async (value: StoreSchema) => {
@@ -69,7 +65,7 @@ export const UpdateStoreDialog = ({ initialValue, open, setOpen }: Prop) => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent>
+      <DialogContent className="max-h-screen overflow-y-scroll no-scrollbar">
         <DialogHeader>
           <DialogTitle>Update Store</DialogTitle>
           <DialogDescription>Edit the store here.</DialogDescription>
