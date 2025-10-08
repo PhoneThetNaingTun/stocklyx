@@ -21,8 +21,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "./ui/form";
-import { Spinner } from "./ui/spinner";
+} from "../ui/form";
+import { Spinner } from "../ui/spinner";
 
 export function LoginForm({
   className,

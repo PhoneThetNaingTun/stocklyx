@@ -1,4 +1,4 @@
-import React from "react";
+import { IconCirclePlusFilled } from "@tabler/icons-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -6,7 +6,6 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { SidebarMenuButton } from "./ui/sidebar";
-import { IconCirclePlusFilled } from "@tabler/icons-react";
 
 const QuickCreateButton = () => {
   return (

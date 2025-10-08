@@ -6,11 +6,14 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { companySchema, CompanySchema } from "@/schema/companySchema";
 import { RegisterSchema, registerSchema } from "@/schema/registerSchema";
+import { useSignupMutation } from "@/store/Apis/authApi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { showToast } from "../toaster";
 import {
   Form,
   FormControl,
@@ -18,12 +21,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "./ui/form";
+} from "../ui/form";
+import { Spinner } from "../ui/spinner";
 
 export function SignupForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const router = useRouter();
+
   const [page, setPage] = useState(1);
   const [userData, setUserData] = useState<RegisterSchema>({
     name: "",
@@ -31,6 +37,7 @@ export function SignupForm({
     password: "",
     confirmPassword: "",
   });
+  const [handleSignUp, { isLoading }] = useSignupMutation();
 
   // user data form
   const userDataForm = useForm<RegisterSchema>({
@@ -63,9 +70,28 @@ export function SignupForm({
     setUserData(value);
     setPage(2);
   };
-  const handleSubmitCompanyData = (value: CompanySchema) => {
-    console.log(value);
-    console.log(userData);
+  const handleSubmitCompanyData = async (value: CompanySchema) => {
+    try {
+      const data = await handleSignUp({
+        user: userData,
+        company: value,
+      }).unwrap();
+      showToast({ title: "Account created successfully", type: "success" });
+      router.replace("/dashboard");
+    } catch (error: any) {
+      if (error.data) {
+        showToast({
+          title: "Error",
+          description: error.data.message,
+          type: "error",
+        });
+        return;
+      }
+      showToast({
+        title: "Something went wrong",
+        type: "error",
+      });
+    }
   };
 
   return (
@@ -105,7 +131,11 @@ export function SignupForm({
                         <FormItem>
                           <FormLabel>User Name</FormLabel>
                           <FormControl>
-                            <Input {...field} placeholder="Jhon Doe" />
+                            <Input
+                              {...field}
+                              placeholder="Jhon Doe"
+                              disabled={isLoading}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -118,7 +148,11 @@ export function SignupForm({
                         <FormItem>
                           <FormLabel>Email</FormLabel>
                           <FormControl>
-                            <Input {...field} placeholder="b4y0r@example.com" />
+                            <Input
+                              {...field}
+                              placeholder="b4y0r@example.com"
+                              disabled={isLoading}
+                            />
                           </FormControl>
                         </FormItem>
                       )}
@@ -138,7 +172,11 @@ export function SignupForm({
                             <FormItem>
                               <FormLabel>Password</FormLabel>
                               <FormControl>
-                                <Input {...field} placeholder="••••••••" />
+                                <Input
+                                  {...field}
+                                  placeholder="••••••••"
+                                  disabled={isLoading}
+                                />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -153,7 +191,11 @@ export function SignupForm({
                             <FormItem>
                               <FormLabel>Confirm Password</FormLabel>
                               <FormControl>
-                                <Input {...field} placeholder="••••••••" />
+                                <Input
+                                  {...field}
+                                  placeholder="••••••••"
+                                  disabled={isLoading}
+                                />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -163,7 +205,9 @@ export function SignupForm({
                     </Field>
                   </Field>
                   <Field>
-                    <Button type="submit">Next</Button>
+                    <Button type="submit" disabled={isLoading}>
+                      {isLoading && <Spinner />}Next
+                    </Button>
                   </Field>
 
                   <FieldDescription className="text-center">
@@ -204,7 +248,11 @@ export function SignupForm({
                         <FormItem>
                           <FormLabel>Company Name</FormLabel>
                           <FormControl>
-                            <Input {...field} placeholder="Company Name" />
+                            <Input
+                              {...field}
+                              placeholder="Company Name"
+                              disabled={isLoading}
+                            />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -223,6 +271,7 @@ export function SignupForm({
                               {...companyDataFileRef}
                               placeholder="logo"
                               type="file"
+                              disabled={isLoading}
                             />
                           </FormControl>
                           <FormMessage />
@@ -231,7 +280,9 @@ export function SignupForm({
                     />
                   </Field>
                   <Field>
-                    <Button type="submit">Create Company</Button>
+                    <Button type="submit" disabled={isLoading}>
+                      {isLoading && <Spinner />} Create Company
+                    </Button>
                   </Field>
                 </FieldGroup>
               </form>

@@ -9,6 +9,13 @@ export const authApi = apiSlice.injectEndpoints({
         body: credentials,
       }),
     }),
+    signup: builder.mutation({
+      query: (credentials) => ({
+        url: "auth/signup",
+        method: "POST",
+        body: credentials,
+      }),
+    }),
     refreshToken: builder.mutation({
       query: () => ({
         url: "auth/refresh",
@@ -19,5 +26,9 @@ export const authApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useLoginMutation, useRefreshTokenMutation, useLazyGetMeQuery } =
-  authApi;
+export const {
+  useLoginMutation,
+  useRefreshTokenMutation,
+  useLazyGetMeQuery,
+  useSignupMutation,
+} = authApi;

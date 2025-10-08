@@ -1,0 +1,85 @@
+import { StoreSchema } from "@/schema/storeSchema";
+import { CircleFadingPlus } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { Button } from "../ui/button";
+import { Field, FieldGroup } from "../ui/field";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
+import { Input } from "../ui/input";
+import { Spinner } from "../ui/spinner";
+
+interface Prop {
+  form: ReturnType<typeof useForm<StoreSchema>>;
+  submitLabel: string;
+  isLoading: boolean;
+  handleSubmit: (value: any) => Promise<void>;
+}
+
+export const StoreForm = ({
+  form,
+  isLoading,
+  handleSubmit,
+  submitLabel,
+}: Prop) => {
+  return (
+    <div>
+      {" "}
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(handleSubmit)}>
+          <FieldGroup>
+            <Field>
+              <FormField
+                control={form.control}
+                name="store_name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Store Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="eg:Store 1"
+                        disabled={isLoading}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </Field>
+            <Field>
+              <FormField
+                control={form.control}
+                name="store_location"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Store location</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="eg:1st Floor, House 1"
+                        disabled={isLoading}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </Field>
+            <Field>
+              <Button type="submit" disabled={isLoading}>
+                {isLoading ? <Spinner /> : <CircleFadingPlus />}
+                {submitLabel}
+              </Button>
+            </Field>
+          </FieldGroup>
+        </form>
+      </Form>
+    </div>
+  );
+};

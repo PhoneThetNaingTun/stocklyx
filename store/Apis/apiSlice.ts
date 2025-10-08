@@ -1,6 +1,19 @@
 import config from "@/config/config";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import {
+  BaseQueryFn,
+  createApi,
+  FetchArgs,
+  fetchBaseQuery,
+} from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
+
+interface CustomError {
+  status: number;
+  data: {
+    message: string[];
+  };
+}
+
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
@@ -13,7 +26,7 @@ export const apiSlice = createApi({
       }
       return headers;
     },
-  }),
-  tagTypes: [],
+  }) as BaseQueryFn<string | FetchArgs, unknown, CustomError>,
+  tagTypes: ["Store"],
   endpoints: () => ({}),
 });
