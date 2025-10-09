@@ -3,17 +3,29 @@ import { apiSlice } from "./apiSlice";
 export const storeApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAllStore: builder.query({
-      query: ({ page, limit, store_name }) => ({
-        url: `/store/all?page=${page}&limit=${limit}&store_name=${store_name}`,
-        method: "GET",
-      }),
+      query: ({ page, limit, store_name }) => {
+        let queryString = "";
+        if (store_name) {
+          queryString = `&store_name=${store_name}`;
+        }
+        return {
+          url: `/store/all?page=${page}&limit=${limit}${queryString}`,
+          method: "GET",
+        };
+      },
       providesTags: ["Store"],
     }),
     getAllArchiveStore: builder.query({
-      query: ({ page, limit, store_name }) => ({
-        url: `/store/all/archived?page=${page}&limit=${limit}&store_name=${store_name}`,
-        method: "GET",
-      }),
+      query: ({ page, limit, store_name }) => {
+        let queryString = "";
+        if (store_name) {
+          queryString = `&store_name=${store_name}`;
+        }
+        return {
+          url: `/store/all/archived?page=${page}&limit=${limit}${queryString}`,
+          method: "GET",
+        };
+      },
       providesTags: ["Store"],
     }),
     createStore: builder.mutation({
@@ -34,7 +46,7 @@ export const storeApi = apiSlice.injectEndpoints({
     }),
     restoreStore: builder.mutation({
       query: (payload) => ({
-        url: `store/${payload.id}/restore`,
+        url: `store/restore/${payload.id}`,
         method: "PATCH",
         body: payload,
       }),
@@ -50,22 +62,22 @@ export const storeApi = apiSlice.injectEndpoints({
     }),
     archiveStore: builder.mutation({
       query: (payload) => ({
-        url: `store/${payload.id}/archive`,
-        method: "DELETE",
+        url: `store/archive/${payload.id}`,
+        method: "PATCH",
       }),
       invalidatesTags: ["Store"],
     }),
     archiveManyStore: builder.mutation({
       query: (payload) => ({
         url: `store/archive-multiple`,
-        method: "DELETE",
+        method: "PATCH",
         body: payload,
       }),
       invalidatesTags: ["Store"],
     }),
     deleteStore: builder.mutation({
       query: (payload) => ({
-        url: `store/${payload.id}/delete`,
+        url: `store/delete/${payload.id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["Store"],

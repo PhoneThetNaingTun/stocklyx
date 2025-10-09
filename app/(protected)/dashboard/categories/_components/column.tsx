@@ -1,15 +1,15 @@
 "use client";
 
 import { Checkbox } from "@/components/ui/checkbox";
-import { Store } from "@/types/store";
+import { Category } from "@/types/category";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArchiveCellAction } from "../../archive/stores/_components/cell-action";
-import { StoreCellAction } from "./cell-action";
+import { ArchiveCategoryCellAction } from "../../archive/categories/_components/cell-action";
+import { CategoryCellAction } from "./cell-action";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
-export const storeColumns: ColumnDef<Store>[] = [
+export const categoryColumns: ColumnDef<Category>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -31,28 +31,8 @@ export const storeColumns: ColumnDef<Store>[] = [
     ),
   },
   {
-    accessorKey: "store_name",
+    accessorKey: "category_name",
     header: "Name",
-  },
-  {
-    accessorKey: "store_email",
-    header: "Email",
-  },
-  {
-    accessorKey: "store_phone",
-    header: "Phone",
-  },
-  {
-    accessorKey: "store_location",
-    header: "Location",
-  },
-  {
-    accessorKey: "store_city",
-    header: "City",
-  },
-  {
-    accessorKey: "store_country",
-    header: "Country",
   },
   {
     header: "Date",
@@ -72,9 +52,9 @@ export const storeColumns: ColumnDef<Store>[] = [
     cell: ({ row }) => (
       <>
         {row.original.deletedAt ? (
-          <ArchiveCellAction data={row.original} />
+          <ArchiveCategoryCellAction data={row.original} />
         ) : (
-          <StoreCellAction data={row.original} />
+          <CategoryCellAction data={row.original} />
         )}
       </>
     ),
