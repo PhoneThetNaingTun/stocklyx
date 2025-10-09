@@ -1,19 +1,19 @@
 "use client";
 
-import * as React from "react";
 import {
+  IconBox,
+  IconBuildingStore,
   IconCamera,
+  IconCashRegister,
+  IconCategory2,
   IconDashboard,
   IconFileAi,
   IconFileDescription,
   IconHelp,
   IconInnerShadowTop,
   IconSettings,
-  IconCashRegister,
-  IconBox,
-  IconBuildingStore,
-  IconCategory2,
 } from "@tabler/icons-react";
+import * as React from "react";
 
 import { NavMain } from "@/components/nav-main";
 import { NavSecondary } from "@/components/nav-secondary";
@@ -27,6 +27,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { useAppSelector } from "@/store/hooks";
 
 const data = {
   user: {
@@ -108,6 +109,7 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { user } = useAppSelector((state) => state.AuthSlice);
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -130,7 +132,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user!} />
       </SidebarFooter>
     </Sidebar>
   );

@@ -3,6 +3,7 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Store } from "@/types/store";
 import { ColumnDef } from "@tanstack/react-table";
+import { ArchiveCellAction } from "../../archive/stores/_components/cell-action";
 import { StoreCellAction } from "./cell-action";
 
 // This type is used to define the shape of our data.
@@ -55,6 +56,14 @@ export const storeColumns: ColumnDef<Store>[] = [
   },
   {
     header: "Actions",
-    cell: ({ row }) => <StoreCellAction data={row.original} />,
+    cell: ({ row }) => (
+      <>
+        {row.original.deletedAt ? (
+          <ArchiveCellAction data={row.original} />
+        ) : (
+          <StoreCellAction data={row.original} />
+        )}
+      </>
+    ),
   },
 ];

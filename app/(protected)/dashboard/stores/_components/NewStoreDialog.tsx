@@ -12,7 +12,7 @@ import {
 import { storeSchema, StoreSchema } from "@/schema/storeSchema";
 import { useCreateStoreMutation } from "@/store/Apis/storeApi";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CircleFadingPlus } from "lucide-react";
+import { IconPlus } from "@tabler/icons-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
@@ -59,7 +59,7 @@ export const NewStoreDialog = () => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>
-          <CircleFadingPlus className="w-4 h-4" /> New Store
+          <IconPlus className="w-4 h-4" /> New Store
         </Button>
       </DialogTrigger>
       <DialogContent className="max-h-screen overflow-y-scroll no-scrollbar">

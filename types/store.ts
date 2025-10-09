@@ -8,4 +8,5 @@ export interface Store {
   store_country: string;
   createdAt: Date;
   updatedAt: Date;
+  deletedAt?: Date;
 }

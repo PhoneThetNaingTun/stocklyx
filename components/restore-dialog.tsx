@@ -12,42 +12,36 @@ import { Spinner } from "./ui/spinner";
 interface Props {
   title: string;
   isLoading: boolean;
-  handleDelete: () => Promise<void>;
+  handleRestore: () => Promise<void>;
   setOpen: (open: boolean) => void;
   open: boolean;
-  archive: boolean;
 }
 
-export const DeleteDialog = ({
+export const RestoreDialog = ({
   title,
   isLoading,
-  handleDelete,
+  handleRestore,
   setOpen,
   open,
-  archive,
 }: Props) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            Are you sure you want to {archive ? "archive" : "delete"} this{" "}
-            {title}?
+            Are you sure you want to restore this {title}?
           </DialogTitle>
-          <DialogDescription className="text-red-500">
-            {archive
-              ? `Archiving this ${title} will allow you to restore it later.`
-              : `This action cannot be undone! This will delete all the data
-              associate with selected ${title}!`}
+          <DialogDescription>
+            Restoring this {title} will allow you to edit it.
           </DialogDescription>
         </DialogHeader>
         <div className="flex items-center gap-4 justify-between">
           <Button
-            variant={"destructive"}
+            className="bg-green-500"
             disabled={isLoading}
-            onClick={handleDelete}
+            onClick={handleRestore}
           >
-            {isLoading && <Spinner />} {archive ? "Archive" : "Delete"}
+            {isLoading && <Spinner />} Restore
           </Button>
           <DialogClose asChild>
             <Button variant={"outline"} disabled={isLoading}>

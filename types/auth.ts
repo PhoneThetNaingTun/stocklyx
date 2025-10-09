@@ -1,8 +1,8 @@
 export enum Role {
-  ADMIN,
-  OWNER,
-  MANAGER,
-  CASHIER,
+  ADMIN = "ADMIN",
+  OWNER = "OWNER",
+  MANAGER = "MANAGER",
+  CASHIER = "CASHIER",
 }
 
 export type User = {

@@ -147,13 +147,11 @@ export const StoreForm = ({
                 )}
               />
             </Field>
-            <Field>
-              <Button type="submit" disabled={isLoading}>
-                {isLoading ? <Spinner /> : <CircleFadingPlus />}
-                {submitLabel}
-              </Button>
-            </Field>
           </FieldGroup>
+          <Button type="submit" disabled={isLoading} className="mt-2 w-full">
+            {isLoading ? <Spinner /> : <CircleFadingPlus />}
+            {submitLabel}
+          </Button>
         </form>
       </Form>
     </div>

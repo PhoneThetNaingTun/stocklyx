@@ -1,4 +1,5 @@
 import { DeleteDialog } from "@/components/delete-dialog";
+import { RestoreDialog } from "@/components/restore-dialog";
 import { showToast } from "@/components/toaster";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,28 +9,54 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
-import { useArchiveStoreMutation } from "@/store/Apis/storeApi";
+import {
+  useDeleteStoreMutation,
+  useRestoreStoreMutation,
+} from "@/store/Apis/storeApi";
 import { Store } from "@/types/store";
-import { IconArchive, IconDotsVertical, IconEdit } from "@tabler/icons-react";
+import { IconDotsVertical, IconRestore, IconTrash } from "@tabler/icons-react";
 import { useState } from "react";
-import { UpdateStoreDialog } from "./UpdateStoreDialog";
 
 interface Props {
   data: Store;
 }
 
-export const StoreCellAction = ({ data }: Props) => {
+export const ArchiveCellAction = ({ data }: Props) => {
   const [open, setOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
-  const [ArchiveStore, { isLoading }] = useArchiveStoreMutation();
+  const [DeleteStore, { isLoading }] = useDeleteStoreMutation();
+  const [RestoreStore, { isLoading: RestoreLoading }] =
+    useRestoreStoreMutation();
   const handleDelete = async () => {
     try {
-      const responseData = await ArchiveStore({ id: data.id }).unwrap();
+      const responseData = await DeleteStore({ id: data.id }).unwrap();
       showToast({
         title: responseData.message,
         type: "success",
       });
       setDeleteOpen(false);
+    } catch (error: any) {
+      if (error?.data?.message) {
+        showToast({
+          title: error.data.message[0],
+          type: "error",
+        });
+      } else {
+        showToast({
+          title: "Something went wrong!",
+          type: "error",
+        });
+      }
+    }
+  };
+  const handleRestore = async () => {
+    try {
+      const responseData = await RestoreStore({ id: data.id }).unwrap();
+      showToast({
+        title: responseData.message,
+        type: "success",
+      });
+      setOpen(false);
     } catch (error: any) {
       if (error?.data?.message) {
         showToast({
@@ -58,22 +85,27 @@ export const StoreCellAction = ({ data }: Props) => {
           <DropdownMenuItem>Actions</DropdownMenuItem>
           <Separator />
           <DropdownMenuItem onClick={() => setOpen(true)}>
-            <IconEdit className="w-4 h-4" /> Edit
+            <IconRestore className="w-4 h-4" /> Restore
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setDeleteOpen(true)}>
-            <IconArchive className="w-4 h-4" /> Archive
+            <IconTrash className="w-4 h-4" /> Delete
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-
-      <UpdateStoreDialog open={open} setOpen={setOpen} initialValue={data} />
+      <RestoreDialog
+        open={open}
+        setOpen={setOpen}
+        title="Store"
+        handleRestore={handleRestore}
+        isLoading={RestoreLoading}
+      />
       <DeleteDialog
         open={deleteOpen}
         setOpen={setDeleteOpen}
         title="Store"
         isLoading={isLoading}
         handleDelete={handleDelete}
-        archive
+        archive={false}
       />
     </div>
   );

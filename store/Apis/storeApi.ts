@@ -9,6 +9,13 @@ export const storeApi = apiSlice.injectEndpoints({
       }),
       providesTags: ["Store"],
     }),
+    getAllArchiveStore: builder.query({
+      query: ({ page, limit, store_name }) => ({
+        url: `/store/all/archived?page=${page}&limit=${limit}&store_name=${store_name}`,
+        method: "GET",
+      }),
+      providesTags: ["Store"],
+    }),
     createStore: builder.mutation({
       query: (payload) => ({
         url: "store/create",
@@ -25,9 +32,40 @@ export const storeApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Store"],
     }),
+    restoreStore: builder.mutation({
+      query: (payload) => ({
+        url: `store/${payload.id}/restore`,
+        method: "PATCH",
+        body: payload,
+      }),
+      invalidatesTags: ["Store"],
+    }),
+    restoreManyStore: builder.mutation({
+      query: (payload) => ({
+        url: `store/restore-multiple`,
+        method: "PATCH",
+        body: payload,
+      }),
+      invalidatesTags: ["Store"],
+    }),
+    archiveStore: builder.mutation({
+      query: (payload) => ({
+        url: `store/${payload.id}/archive`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Store"],
+    }),
+    archiveManyStore: builder.mutation({
+      query: (payload) => ({
+        url: `store/archive-multiple`,
+        method: "DELETE",
+        body: payload,
+      }),
+      invalidatesTags: ["Store"],
+    }),
     deleteStore: builder.mutation({
       query: (payload) => ({
-        url: `store/delete/${payload.id}`,
+        url: `store/${payload.id}/delete`,
         method: "DELETE",
       }),
       invalidatesTags: ["Store"],
@@ -47,6 +85,11 @@ export const {
   useGetAllStoreQuery,
   useCreateStoreMutation,
   useUpdateStoreMutation,
+  useArchiveStoreMutation,
+  useGetAllArchiveStoreQuery,
+  useArchiveManyStoreMutation,
   useDeleteStoreMutation,
   useDeleteManyStoreMutation,
+  useRestoreManyStoreMutation,
+  useRestoreStoreMutation,
 } = storeApi;

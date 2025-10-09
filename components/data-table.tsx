@@ -31,7 +31,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { IconChevronDown, IconLayoutColumns } from "@tabler/icons-react";
+import { IconChevronDown, IconColumns2 } from "@tabler/icons-react";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface DataTableProps<TData, TValue> {
@@ -106,7 +106,7 @@ export function DataTable<TData, TValue>({
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" size="sm">
-              <IconLayoutColumns />
+              <IconColumns2 />
               <span className="hidden lg:inline">Customize Columns</span>
               <span className="lg:hidden">Columns</span>
               <IconChevronDown />
