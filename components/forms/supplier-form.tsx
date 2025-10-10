@@ -1,4 +1,4 @@
-import { CustomerSchema } from "@/schema/customerSchema";
+import { SupplierSchema } from "@/schema/supplierSchema";
 import { CircleFadingPlus } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Button } from "../ui/button";
@@ -15,13 +15,13 @@ import { Input } from "../ui/input";
 import { Spinner } from "../ui/spinner";
 
 interface Prop {
-  form: ReturnType<typeof useForm<CustomerSchema>>;
+  form: ReturnType<typeof useForm<SupplierSchema>>;
   submitLabel: string;
   isLoading: boolean;
   handleSubmit: (value: any) => Promise<void>;
 }
 
-export const CustomerForm = ({
+export const SupplierForm = ({
   form,
   isLoading,
   handleSubmit,
@@ -36,14 +36,13 @@ export const CustomerForm = ({
             <Field>
               <FormField
                 control={form.control}
-                name="customer_name"
+                name="supplier_name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Customer Name</FormLabel>
+                    <FormLabel>Supplier Name</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
-                        value={field.value ?? ""}
                         placeholder="eg: John Doe"
                         disabled={isLoading}
                       />
@@ -56,10 +55,10 @@ export const CustomerForm = ({
             <Field>
               <FormField
                 control={form.control}
-                name="customer_email"
+                name="supplier_email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Customer Email</FormLabel>
+                    <FormLabel>Supplier Email</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
@@ -77,10 +76,10 @@ export const CustomerForm = ({
             <Field>
               <FormField
                 control={form.control}
-                name="customer_phone"
+                name="supplier_phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Customer Phone</FormLabel>
+                    <FormLabel>Supplier Phone</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
@@ -97,10 +96,10 @@ export const CustomerForm = ({
             <Field>
               <FormField
                 control={form.control}
-                name="customer_address"
+                name="supplier_address"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Customer Address</FormLabel>
+                    <FormLabel>Supplier Address</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
@@ -117,10 +116,10 @@ export const CustomerForm = ({
             <Field>
               <FormField
                 control={form.control}
-                name="customer_city"
+                name="supplier_city"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Customer City</FormLabel>
+                    <FormLabel>Supplier City</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
@@ -137,10 +136,10 @@ export const CustomerForm = ({
             <Field>
               <FormField
                 control={form.control}
-                name="customer_country"
+                name="supplier_country"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Customer Country</FormLabel>
+                    <FormLabel>Supplier Country</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
