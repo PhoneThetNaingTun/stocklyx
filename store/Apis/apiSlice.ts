@@ -27,6 +27,6 @@ export const apiSlice = createApi({
       return headers;
     },
   }) as BaseQueryFn<string | FetchArgs, unknown, CustomError>,
-  tagTypes: ["Store", "Category", "Brand"],
+  tagTypes: ["Store", "Category", "Brand", "Customer"],
   endpoints: () => ({}),
 });
