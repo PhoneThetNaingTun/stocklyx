@@ -12,6 +12,7 @@ import {
   IconHelp,
   IconInnerShadowTop,
   IconSettings,
+  IconTagStarred,
 } from "@tabler/icons-react";
 import * as React from "react";
 
@@ -44,6 +45,7 @@ const data = {
     { title: "POS", url: "/pos", icon: IconCashRegister },
     { title: "Products", url: "/products", icon: IconBox },
     { title: "Categories", url: "/categories", icon: IconCategory2 },
+    { title: "Brands", url: "/brands", icon: IconTagStarred },
     { title: "Stores", url: "/stores", icon: IconBuildingStore },
   ],
   navClouds: [
