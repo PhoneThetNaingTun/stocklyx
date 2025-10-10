@@ -1,4 +1,5 @@
 import { DeleteDialog } from "@/components/delete-dialog";
+import { RestoreDialog } from "@/components/restore-dialog";
 import { showToast } from "@/components/toaster";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,28 +9,54 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
-import { useArchiveCategoryMutation } from "@/store/Apis/categoryApi";
-import { Category } from "@/types/category";
-import { IconArchive, IconDotsVertical, IconEdit } from "@tabler/icons-react";
+import {
+  useDeleteBrandMutation,
+  useRestoreBrandMutation,
+} from "@/store/Apis/brandApi";
+import { Brand } from "@/types/brand";
+import { IconDotsVertical, IconRestore, IconTrash } from "@tabler/icons-react";
 import { useState } from "react";
-import { UpdateCategoryDialog } from "./UpdateCategoryDialog";
 
 interface Props {
-  data: Category;
+  data: Brand;
 }
 
-export const CategoryCellAction = ({ data }: Props) => {
+export const ArchiveBrandCellAction = ({ data }: Props) => {
   const [open, setOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
-  const [ArchiveCategory, { isLoading }] = useArchiveCategoryMutation();
+  const [DeleteBrand, { isLoading }] = useDeleteBrandMutation();
+  const [RestoreBrand, { isLoading: RestoreLoading }] =
+    useRestoreBrandMutation();
   const handleDelete = async () => {
     try {
-      const responseData = await ArchiveCategory({ id: data.id }).unwrap();
+      const responseData = await DeleteBrand({ id: data.id }).unwrap();
       showToast({
         title: responseData.message,
         type: "success",
       });
       setDeleteOpen(false);
+    } catch (error: any) {
+      if (error?.data?.message) {
+        showToast({
+          title: error.data.message[0],
+          type: "error",
+        });
+      } else {
+        showToast({
+          title: "Something went wrong!",
+          type: "error",
+        });
+      }
+    }
+  };
+  const handleRestore = async () => {
+    try {
+      const responseData = await RestoreBrand({ id: data.id }).unwrap();
+      showToast({
+        title: responseData.message,
+        type: "success",
+      });
+      setOpen(false);
     } catch (error: any) {
       if (error?.data?.message) {
         showToast({
@@ -58,22 +85,27 @@ export const CategoryCellAction = ({ data }: Props) => {
           <DropdownMenuItem>Actions</DropdownMenuItem>
           <Separator />
           <DropdownMenuItem onClick={() => setOpen(true)}>
-            <IconEdit className="w-4 h-4" /> Edit
+            <IconRestore className="w-4 h-4" /> Restore
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setDeleteOpen(true)}>
-            <IconArchive className="w-4 h-4" /> Archive
+            <IconTrash className="w-4 h-4" /> Delete
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-
-      <UpdateCategoryDialog open={open} setOpen={setOpen} initialValue={data} />
+      <RestoreDialog
+        open={open}
+        setOpen={setOpen}
+        title="Brand"
+        handleRestore={handleRestore}
+        isLoading={RestoreLoading}
+      />
       <DeleteDialog
         open={deleteOpen}
         setOpen={setDeleteOpen}
-        title="Category"
+        title="Brand"
         isLoading={isLoading}
         handleDelete={handleDelete}
-        archive
+        archive={false}
       />
     </div>
   );

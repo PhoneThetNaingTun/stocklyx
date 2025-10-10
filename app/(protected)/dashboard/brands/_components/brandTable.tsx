@@ -8,61 +8,61 @@ import { showToast } from "@/components/toaster";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
-  useArchiveManyCategoryMutation,
-  useDeleteManyCategoryMutation,
-  useGetAllArchivedCategoriesQuery,
-  useGetAllCategoriesQuery,
-  useRestoreManyCategoryMutation,
-} from "@/store/Apis/categoryApi";
-import { Category } from "@/types/category";
+  useArchiveManyBrandMutation,
+  useDeleteManyBrandMutation,
+  useGetAllArchivedBrandsQuery,
+  useGetAllBrandsQuery,
+  useRestoreManyBrandMutation,
+} from "@/store/Apis/brandApi";
+import { Brand } from "@/types/brand";
 import { IconArchive, IconRestore, IconTrash } from "@tabler/icons-react";
 import { ColumnDef, PaginationState } from "@tanstack/react-table";
 import { useState } from "react";
 import { useDebounce } from "use-debounce";
 
 interface Props {
-  column: ColumnDef<Category>[];
+  column: ColumnDef<Brand>[];
   archivePage: boolean;
 }
 
-export const CategoryTable = ({ column, archivePage }: Props) => {
-  const [selectedRows, setSelectedRows] = useState<Category[]>([]);
+export const BrandTable = ({ column, archivePage }: Props) => {
+  const [selectedRows, setSelectedRows] = useState<Brand[]>([]);
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });
-  const [filter, setFilter] = useState<{ category_name: string }>({
-    category_name: "",
+  const [filter, setFilter] = useState<{ brand_name: string }>({
+    brand_name: "",
   });
   const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
   const [restoreOpen, setRestoreOpen] = useState<boolean>(false);
-  const [debounceCategoryName] = useDebounce(filter.category_name, 500);
+  const [debounceBrandName] = useDebounce(filter.brand_name, 500);
 
   const { data, isLoading } = archivePage
-    ? useGetAllArchivedCategoriesQuery({
+    ? useGetAllArchivedBrandsQuery({
         page: pagination.pageIndex + 1,
         limit: pagination.pageSize,
-        category_name: debounceCategoryName,
+        brand_name: debounceBrandName,
       })
-    : useGetAllCategoriesQuery({
+    : useGetAllBrandsQuery({
         page: pagination.pageIndex + 1,
         limit: pagination.pageSize,
-        category_name: debounceCategoryName,
+        brand_name: debounceBrandName,
       });
   const [Delete] = archivePage
-    ? useDeleteManyCategoryMutation()
-    : useArchiveManyCategoryMutation();
+    ? useDeleteManyBrandMutation()
+    : useArchiveManyBrandMutation();
 
-  const [Restore] = useRestoreManyCategoryMutation();
+  const [Restore] = useRestoreManyBrandMutation();
 
   const handleDeleteMany = async () => {
     try {
       const ids = selectedRows.map((item) => item.id);
       if (ids.length === 0) {
-        showToast({ title: "No category selected", type: "error" });
+        showToast({ title: "No brand selected", type: "error" });
         return;
       }
-      const deletedData = await Delete({ categoryIds: ids }).unwrap();
+      const deletedData = await Delete({ brandIds: ids }).unwrap();
       showToast({ title: deletedData.message, type: "success" });
       setSelectedRows([]);
       setDeleteOpen(false);
@@ -79,11 +79,11 @@ export const CategoryTable = ({ column, archivePage }: Props) => {
     try {
       const ids = selectedRows.map((item) => item.id);
       if (ids.length === 0) {
-        showToast({ title: "No Category selected", type: "error" });
+        showToast({ title: "No Brand selected", type: "error" });
         return;
       }
       const restoreData = await Restore({
-        categoryIds: ids,
+        brandIds: ids,
       }).unwrap();
       showToast({ title: restoreData.message, type: "success" });
       setSelectedRows([]);
@@ -105,10 +105,10 @@ export const CategoryTable = ({ column, archivePage }: Props) => {
     <div>
       <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 py-4 ">
         <Input
-          placeholder="Filter category name..."
-          value={filter.category_name}
+          placeholder="Filter brand name..."
+          value={filter.brand_name}
           onChange={(e) => {
-            setFilter({ category_name: e.target.value });
+            setFilter({ brand_name: e.target.value });
             setPagination((prev) => ({ ...prev, pageIndex: 0 }));
           }}
           className="mb-4"
@@ -134,7 +134,7 @@ export const CategoryTable = ({ column, archivePage }: Props) => {
               )}
             </Button>
             <DeleteDialog
-              title="categories"
+              title="brands"
               handleDelete={handleDeleteMany}
               isLoading={isLoading}
               open={deleteOpen}
@@ -162,7 +162,7 @@ export const CategoryTable = ({ column, archivePage }: Props) => {
         </div>
       )}
       <DataTable
-        data={data?.categories || []}
+        data={data?.brands || []}
         columns={column}
         setPagination={setPagination}
         pagination={pagination}

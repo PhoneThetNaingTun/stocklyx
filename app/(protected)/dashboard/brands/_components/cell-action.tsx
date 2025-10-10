@@ -8,23 +8,23 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
-import { useArchiveCategoryMutation } from "@/store/Apis/categoryApi";
-import { Category } from "@/types/category";
+import { useArchiveBrandMutation } from "@/store/Apis/brandApi";
+import { Brand } from "@/types/brand";
 import { IconArchive, IconDotsVertical, IconEdit } from "@tabler/icons-react";
 import { useState } from "react";
-import { UpdateCategoryDialog } from "./UpdateCategoryDialog";
+import { UpdateBrandDialog } from "./UpdateBrandDialog";
 
 interface Props {
-  data: Category;
+  data: Brand;
 }
 
-export const CategoryCellAction = ({ data }: Props) => {
+export const BrandCellAction = ({ data }: Props) => {
   const [open, setOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
-  const [ArchiveCategory, { isLoading }] = useArchiveCategoryMutation();
+  const [Archive, { isLoading }] = useArchiveBrandMutation();
   const handleDelete = async () => {
     try {
-      const responseData = await ArchiveCategory({ id: data.id }).unwrap();
+      const responseData = await Archive({ id: data.id }).unwrap();
       showToast({
         title: responseData.message,
         type: "success",
@@ -66,11 +66,11 @@ export const CategoryCellAction = ({ data }: Props) => {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <UpdateCategoryDialog open={open} setOpen={setOpen} initialValue={data} />
+      <UpdateBrandDialog open={open} setOpen={setOpen} initialValue={data} />
       <DeleteDialog
         open={deleteOpen}
         setOpen={setDeleteOpen}
-        title="Category"
+        title="Brand"
         isLoading={isLoading}
         handleDelete={handleDelete}
         archive
