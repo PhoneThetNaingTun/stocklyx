@@ -9,7 +9,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { categorySchema, CategorySchema } from "@/schema/categorySchema";
-import { StoreSchema } from "@/schema/storeSchema";
 import { useUpdateCategoryMutation } from "@/store/Apis/categoryApi";
 import { Category } from "@/types/category";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -35,7 +34,7 @@ export const UpdateCategoryDialog = ({ initialValue, open, setOpen }: Prop) => {
       ...initialValue,
     });
   }, [initialValue, categoryForm]);
-  const handleSubmit = async (value: StoreSchema) => {
+  const handleSubmit = async (value: CategorySchema) => {
     try {
       const data = await updateCategory({
         id: initialValue.id,

@@ -9,7 +9,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { StoreSchema } from "@/schema/storeSchema";
 import { supplierSchema, SupplierSchema } from "@/schema/supplierSchema";
 import { useCreateSupplierMutation } from "@/store/Apis/supplierApi";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -35,7 +34,7 @@ export const NewSupplierDialog = () => {
     mode: "onBlur",
   });
 
-  const handleSubmit = async (value: StoreSchema) => {
+  const handleSubmit = async (value: SupplierSchema) => {
     try {
       const data = await Create(value).unwrap();
 

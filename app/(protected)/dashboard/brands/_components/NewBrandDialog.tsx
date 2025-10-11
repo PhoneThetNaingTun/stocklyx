@@ -10,7 +10,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { brandSchema, BrandSchema } from "@/schema/brandSchema";
-import { CategorySchema } from "@/schema/categorySchema";
 import { useCreateBrandMutation } from "@/store/Apis/brandApi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IconPlus } from "@tabler/icons-react";
@@ -30,7 +29,7 @@ export const NewBrandDialog = () => {
     mode: "onBlur",
   });
 
-  const handleSubmit = async (value: CategorySchema) => {
+  const handleSubmit = async (value: BrandSchema) => {
     try {
       const data = await createBrand(value).unwrap();
 

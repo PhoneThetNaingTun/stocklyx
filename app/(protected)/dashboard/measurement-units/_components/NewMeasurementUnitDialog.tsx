@@ -1,5 +1,5 @@
 "use client";
-import { CustomerForm } from "@/components/forms/customer-form";
+import { MeasurementUnitForm } from "@/components/forms/measurement-unit-form";
 import { showToast } from "@/components/toaster";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,40 +9,38 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { customerSchema, CustomerSchema } from "@/schema/customerSchema";
-import { useCreateCustomerMutation } from "@/store/Apis/customerApi";
+import {
+  measurementUnitSchema,
+  MeasurementUnitSchema,
+} from "@/schema/measurementUnitSchema";
+import { useCreateMeasurementUnitMutation } from "@/store/Apis/measurementUnitApi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IconPlus } from "@tabler/icons-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-export const NewCustomerDialog = () => {
+export const NewMeasurementUnitDialog = () => {
   const [open, setOpen] = useState<boolean>(false);
 
-  const [CreateCustomer, { isLoading }] = useCreateCustomerMutation();
+  const [create, { isLoading }] = useCreateMeasurementUnitMutation();
 
-  const customerForm = useForm<CustomerSchema>({
-    resolver: zodResolver(customerSchema),
+  const measurementUnitForm = useForm<MeasurementUnitSchema>({
+    resolver: zodResolver(measurementUnitSchema),
     defaultValues: {
-      customer_name: "",
-      customer_email: "",
-      customer_phone: "",
-      customer_address: "",
-      customer_city: "",
-      customer_country: "",
+      unit: "",
     },
     mode: "onBlur",
   });
 
-  const handleSubmit = async (value: CustomerSchema) => {
+  const handleSubmit = async (value: MeasurementUnitSchema) => {
     try {
-      const data = await CreateCustomer(value).unwrap();
+      const data = await create(value).unwrap();
 
       showToast({
         title: data.message,
         type: "success",
       });
-      customerForm.reset();
+      measurementUnitForm.reset();
       setOpen(false);
     } catch (error: any) {
       if (error?.data?.message) {
@@ -63,16 +61,16 @@ export const NewCustomerDialog = () => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>
-          <IconPlus className="w-4 h-4" /> New Customer
+          <IconPlus className="w-4 h-4" /> New Measurement Unit
         </Button>
       </DialogTrigger>
       <DialogContent className="max-h-screen overflow-y-scroll no-scrollbar">
         <DialogHeader>
-          <DialogTitle>New Customer</DialogTitle>
+          <DialogTitle>New Measurement Unit</DialogTitle>
         </DialogHeader>
         <div>
-          <CustomerForm
-            form={customerForm}
+          <MeasurementUnitForm
+            form={measurementUnitForm}
             isLoading={isLoading}
             handleSubmit={handleSubmit}
             submitLabel="Create"

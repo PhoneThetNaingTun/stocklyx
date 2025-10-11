@@ -9,7 +9,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { brandSchema, BrandSchema } from "@/schema/brandSchema";
-import { StoreSchema } from "@/schema/storeSchema";
 import { useUpdateBrandMutation } from "@/store/Apis/brandApi";
 import { Brand } from "@/types/brand";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -35,7 +34,7 @@ export const UpdateBrandDialog = ({ initialValue, open, setOpen }: Prop) => {
       ...initialValue,
     });
   }, [initialValue, brandForm]);
-  const handleSubmit = async (value: StoreSchema) => {
+  const handleSubmit = async (value: BrandSchema) => {
     try {
       const data = await updateBrand({
         id: initialValue.id,

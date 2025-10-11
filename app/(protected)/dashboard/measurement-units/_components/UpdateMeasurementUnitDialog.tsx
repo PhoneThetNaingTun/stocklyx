@@ -1,5 +1,5 @@
 "use client";
-import { SupplierForm } from "@/components/forms/supplier-form";
+import { MeasurementUnitForm } from "@/components/forms/measurement-unit-form";
 import { showToast } from "@/components/toaster";
 import {
   Dialog,
@@ -8,33 +8,40 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { supplierSchema, SupplierSchema } from "@/schema/supplierSchema";
-import { useUpdateSupplierMutation } from "@/store/Apis/supplierApi";
-import { Supplier } from "@/types/supplier";
+import {
+  measurementUnitSchema,
+  MeasurementUnitSchema,
+} from "@/schema/measurementUnitSchema";
+import { useUpdateMeasurementUnitMutation } from "@/store/Apis/measurementUnitApi";
+import { MeasurementUnit } from "@/types/measurement-unit";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 interface Prop {
-  initialValue: Supplier;
+  initialValue: MeasurementUnit;
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-export const UpdateSupplierDialog = ({ initialValue, open, setOpen }: Prop) => {
-  const [Update, { isLoading }] = useUpdateSupplierMutation();
+export const UpdateMeasurementUnitDialog = ({
+  initialValue,
+  open,
+  setOpen,
+}: Prop) => {
+  const [Update, { isLoading }] = useUpdateMeasurementUnitMutation();
 
-  const supplierForm = useForm<SupplierSchema>({
-    resolver: zodResolver(supplierSchema),
+  const measurementUnitForm = useForm<MeasurementUnitSchema>({
+    resolver: zodResolver(measurementUnitSchema),
     defaultValues: initialValue,
     mode: "onBlur",
   });
   useEffect(() => {
-    supplierForm.reset({
+    measurementUnitForm.reset({
       ...initialValue,
     });
-  }, [initialValue, supplierForm]);
-  const handleSubmit = async (value: SupplierSchema) => {
+  }, [initialValue, measurementUnitForm]);
+  const handleSubmit = async (value: MeasurementUnitSchema) => {
     try {
       const data = await Update({
         id: initialValue.id,
@@ -45,7 +52,7 @@ export const UpdateSupplierDialog = ({ initialValue, open, setOpen }: Prop) => {
         title: data.message,
         type: "success",
       });
-      supplierForm.reset();
+      measurementUnitForm.reset();
       setOpen(false);
     } catch (error: any) {
       if (error?.data?.message) {
@@ -66,12 +73,12 @@ export const UpdateSupplierDialog = ({ initialValue, open, setOpen }: Prop) => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="max-h-screen overflow-y-scroll no-scrollbar">
         <DialogHeader>
-          <DialogTitle>Update Supplier</DialogTitle>
-          <DialogDescription>Edit the supplier here.</DialogDescription>
+          <DialogTitle>Update Measurement Unit</DialogTitle>
+          <DialogDescription>Edit the unit here.</DialogDescription>
         </DialogHeader>
         <div>
-          <SupplierForm
-            form={supplierForm}
+          <MeasurementUnitForm
+            form={measurementUnitForm}
             isLoading={isLoading}
             handleSubmit={handleSubmit}
             submitLabel="Update"

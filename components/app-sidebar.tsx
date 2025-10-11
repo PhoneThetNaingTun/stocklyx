@@ -6,6 +6,7 @@ import {
   IconCamera,
   IconCashRegister,
   IconCategory2,
+  IconCircleDashedNumber1,
   IconDashboard,
   IconFileAi,
   IconFileDescription,
@@ -51,6 +52,11 @@ const data = {
     { title: "Stores", url: "/stores", icon: IconBuildingStore },
     { title: "Customers", url: "/customers", icon: IconUsers },
     { title: "Suppliers", url: "/suppliers", icon: IconTruck },
+    {
+      title: "Measurement Units",
+      url: "/measurement-units",
+      icon: IconCircleDashedNumber1,
+    },
   ],
   navClouds: [
     {
