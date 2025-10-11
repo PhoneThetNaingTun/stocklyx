@@ -9,7 +9,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { customerSchema, CustomerSchema } from "@/schema/customerSchema";
-import { StoreSchema } from "@/schema/storeSchema";
 import { useUpdateCustomerMutation } from "@/store/Apis/customerApi";
 import { Customer } from "@/types/customer";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -35,7 +34,7 @@ export const UpdateCustomerDialog = ({ initialValue, open, setOpen }: Prop) => {
       ...initialValue,
     });
   }, [initialValue, customerForm]);
-  const handleSubmit = async (value: StoreSchema) => {
+  const handleSubmit = async (value: CustomerSchema) => {
     try {
       const data = await UpdateCustomer({
         id: initialValue.id,
