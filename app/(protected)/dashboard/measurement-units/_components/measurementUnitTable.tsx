@@ -31,22 +31,26 @@ export const MeasurementUnitTable = ({ column, archivePage }: Props) => {
     pageIndex: 0,
     pageSize: 10,
   });
-  const [filter, setFilter] = useState<{ unit: string }>({
+  const [filter, setFilter] = useState<{ unit: string; name: string }>({
     unit: "",
+    name: "",
   });
   const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
   const [restoreOpen, setRestoreOpen] = useState<boolean>(false);
   const [devoundUnit] = useDebounce(filter.unit, 500);
+  const [devoundName] = useDebounce(filter.name, 500);
 
   const { data, isLoading } = archivePage
     ? useGetAllArchivedMeasurementUnitQuery({
         page: pagination.pageIndex + 1,
         limit: pagination.pageSize,
+        name: devoundName,
         unit: devoundUnit,
       })
     : useGetAllMeasurementUnitsQuery({
         page: pagination.pageIndex + 1,
         limit: pagination.pageSize,
+        name: devoundName,
         unit: devoundUnit,
       });
   const [Delete] = archivePage
@@ -105,10 +109,19 @@ export const MeasurementUnitTable = ({ column, archivePage }: Props) => {
     <div>
       <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 py-4 ">
         <Input
+          placeholder="Filter unit name..."
+          value={filter.name}
+          onChange={(e) => {
+            setFilter({ ...filter, name: e.target.value });
+            setPagination((prev) => ({ ...prev, pageIndex: 0 }));
+          }}
+          className="mb-4"
+        />
+        <Input
           placeholder="Filter unit..."
           value={filter.unit}
           onChange={(e) => {
-            setFilter({ unit: e.target.value });
+            setFilter({ ...filter, unit: e.target.value });
             setPagination((prev) => ({ ...prev, pageIndex: 0 }));
           }}
           className="mb-4"

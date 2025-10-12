@@ -3,8 +3,11 @@ import { apiSlice } from "./apiSlice";
 export const measurementUnitApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAllMeasurementUnits: builder.query({
-      query: ({ page, limit, unit }) => {
+      query: ({ page, limit, name, unit }) => {
         let queryString = "";
+        if (name) {
+          queryString = `&name=${name}`;
+        }
         if (unit) {
           queryString = `&unit=${unit}`;
         }
@@ -16,8 +19,11 @@ export const measurementUnitApi = apiSlice.injectEndpoints({
       providesTags: ["MeasurementUnit"],
     }),
     getAllArchivedMeasurementUnit: builder.query({
-      query: ({ page, limit, unit }) => {
+      query: ({ page, limit, name, unit }) => {
         let queryString = "";
+        if (name) {
+          queryString = `&name=${name}`;
+        }
         if (unit) {
           queryString = `&unit=${unit}`;
         }

@@ -36,6 +36,25 @@ export const MeasurementUnitForm = ({
             <Field>
               <FormField
                 control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="eg:Pieces"
+                        disabled={isLoading}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </Field>
+            <Field>
+              <FormField
+                control={form.control}
                 name="unit"
                 render={({ field }) => (
                   <FormItem>
