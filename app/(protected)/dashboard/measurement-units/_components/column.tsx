@@ -31,6 +31,10 @@ export const measurementUnitColumns: ColumnDef<MeasurementUnit>[] = [
     ),
   },
   {
+    accessorKey: "name",
+    header: "Unit Name",
+  },
+  {
     accessorKey: "unit",
     header: "Unit",
   },
