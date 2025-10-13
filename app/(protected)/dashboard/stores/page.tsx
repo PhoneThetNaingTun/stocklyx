@@ -14,7 +14,7 @@ const Store = () => {
           <span>Stores</span>
         </h2>
       </div>
-      <div className="flex justify-end items-center gap-3">
+      <div className="flex flex-col md:flex-row  justify-end md:items-center  gap-3">
         <NewStoreDialog />
         <Button variant={"outline"}>
           <Link

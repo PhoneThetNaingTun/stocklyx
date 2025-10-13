@@ -39,6 +39,32 @@ export const measurementUnitColumns: ColumnDef<MeasurementUnit>[] = [
     header: "Unit",
   },
   {
+    accessorKey: "baseUnit",
+    header: "Base Unit",
+    cell: ({ row }) => (
+      <>{row.original?.baseUnit ? row.original.baseUnit.name : "-"}</>
+    ),
+  },
+  {
+    accessorKey: "operator",
+    header: "Operator",
+    cell: ({ row }) => (
+      <>{row.original?.operator ? row.original.operator : "-"}</>
+    ),
+  },
+  {
+    accessorKey: "operation_value",
+    header: "Operation Value",
+    cell: ({ row }) => (
+      <>{row.original?.operation_value ? row.original.operation_value : "-"}</>
+    ),
+  },
+  {
+    accessorKey: "description",
+    header: "Description",
+  },
+
+  {
     header: "Date",
     cell: ({ row }) => {
       return row.original.deletedAt

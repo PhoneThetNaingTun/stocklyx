@@ -15,7 +15,7 @@ const Brands = () => {
           Brands
         </h2>
       </div>
-      <div className="flex justify-end gap-3">
+      <div className="flex flex-col md:flex-row  justify-end md:items-center gap-3">
         <NewBrandDialog />
         <Button variant={"outline"}>
           <Link

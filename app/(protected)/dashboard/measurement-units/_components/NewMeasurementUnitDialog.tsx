@@ -28,6 +28,11 @@ export const NewMeasurementUnitDialog = () => {
     resolver: zodResolver(measurementUnitSchema),
     defaultValues: {
       unit: "",
+      name: "",
+      baseUnitId: "",
+      operator: undefined,
+      description: "",
+      operation_value: undefined,
     },
     mode: "onBlur",
   });

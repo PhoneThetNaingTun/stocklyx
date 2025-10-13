@@ -1,12 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { apiSlice } from "./Apis/apiSlice";
 import AuthSliceReducer from "./Slices/authSlice";
+import MeasurementUnitSliceReducer from "./Slices/MeasurementUnitSlice";
 // ...
 
 export const store = configureStore({
   reducer: {
     [apiSlice.reducerPath]: apiSlice.reducer,
     AuthSlice: AuthSliceReducer,
+    MeasurementUnitSlice: MeasurementUnitSliceReducer,
   },
 
   middleware: (getDefaultMiddleware) =>
