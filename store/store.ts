@@ -1,6 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { apiSlice } from "./Apis/apiSlice";
 import AuthSliceReducer from "./Slices/authSlice";
+import BrandSliceReducer from "./Slices/BrandSlice";
+import CategorySliceReducer from "./Slices/CategorySlice";
 import MeasurementUnitSliceReducer from "./Slices/MeasurementUnitSlice";
 // ...
 
@@ -9,6 +11,8 @@ export const store = configureStore({
     [apiSlice.reducerPath]: apiSlice.reducer,
     AuthSlice: AuthSliceReducer,
     MeasurementUnitSlice: MeasurementUnitSliceReducer,
+    CategorySlice: CategorySliceReducer,
+    BrandSlice: BrandSliceReducer,
   },
 
   middleware: (getDefaultMiddleware) =>
