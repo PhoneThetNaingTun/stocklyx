@@ -22,7 +22,16 @@ const Product = () => {
             className="flex items-center gap-2"
           >
             <IconArchive />
-            <span>Archives</span>
+            <span>Product Archives</span>
+          </Link>
+        </Button>
+        <Button variant={"outline"}>
+          <Link
+            href={"/dashboard/archive/product-variants"}
+            className="flex items-center gap-2"
+          >
+            <IconArchive />
+            <span>Product Prices Archives</span>
           </Link>
         </Button>
       </div>

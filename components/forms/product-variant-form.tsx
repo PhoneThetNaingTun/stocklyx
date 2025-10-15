@@ -1,6 +1,5 @@
 import { useGetUnits } from "@/hooks/useGetUnits";
-import { MeasurementUnitSchema } from "@/schema/measurementUnitSchema";
-import { Operator } from "@/types/measurement-unit";
+import { ProductVariantSchema } from "@/schema/productVariantSchema";
 import { IconArrowLeft, IconArrowRight, IconX } from "@tabler/icons-react";
 import { CircleFadingPlus } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -23,16 +22,15 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Spinner } from "../ui/spinner";
-import { Textarea } from "../ui/textarea";
 
 interface Prop {
-  form: ReturnType<typeof useForm<MeasurementUnitSchema>>;
+  form: ReturnType<typeof useForm<ProductVariantSchema>>;
   submitLabel: string;
   isLoading: boolean;
   handleSubmit: (value: any) => Promise<void>;
 }
 
-export const MeasurementUnitForm = ({
+export const ProductVariantForm = ({
   form,
   isLoading,
   handleSubmit,
@@ -41,30 +39,30 @@ export const MeasurementUnitForm = ({
   const {
     measurementUnits,
     isLoading: isLoadingUnit,
-    totalPages,
-    handleNext,
-    handlePrevious,
-    handleSearchChange,
-    page,
-    search,
+    totalPages: measurementUnitTotalPages,
+    handleNext: handleNextMeasurementUnit,
+    handlePrevious: handlePreviousMeasurementUnit,
+    handleSearchChange: handleSearchChangeMeasurementUnit,
+    page: measurementUnitPage,
+    search: measurementUnitSearch,
   } = useGetUnits(1, 10);
+
   return (
-    <div>
-      {" "}
+    <div className="relative">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)}>
           <FieldGroup className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Field>
               <FormField
                 control={form.control}
-                name="name"
+                name={`variant_name`}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Name *</FormLabel>
+                    <FormLabel>Variant Name *</FormLabel>
                     <FormControl>
                       <Input
                         {...field}
-                        placeholder="eg:Pieces"
+                        placeholder="eg: A bottle of coke"
                         disabled={isLoading}
                       />
                     </FormControl>
@@ -76,48 +74,29 @@ export const MeasurementUnitForm = ({
             <Field>
               <FormField
                 control={form.control}
-                name="unit"
+                name={`saleUnitId`}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Unit *</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        placeholder="eg:Pcs"
-                        disabled={isLoading}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </Field>
-            <Field>
-              <FormField
-                control={form.control}
-                name="baseUnitId"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Base Unit</FormLabel>
+                    <FormLabel>Sale Unit *</FormLabel>
                     <FormControl>
                       <Select
                         onValueChange={field.onChange}
                         value={field.value ?? ""}
                       >
                         <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Select Unit (optional)" />
+                          <SelectValue placeholder="Select Unit " />
                         </SelectTrigger>
 
                         <SelectContent className="max-h-[200px]">
                           <div className="flex gap-1 items-center">
                             <Input
                               onChange={(e) => {
-                                handleSearchChange({
-                                  ...search,
+                                handleSearchChangeMeasurementUnit({
+                                  ...measurementUnitSearch,
                                   name: e.target.value,
                                 });
                               }}
-                              value={search.name}
+                              value={measurementUnitSearch.name}
                               placeholder="eg: Pieces"
                               className="flex-1"
                             />
@@ -145,24 +124,28 @@ export const MeasurementUnitForm = ({
                             <>
                               <div className="w-full flex items-center gap-2 justify-between">
                                 <Button
-                                  disabled={page === 1 || isLoadingUnit}
-                                  onClick={handlePrevious}
+                                  disabled={
+                                    measurementUnitPage === 1 || isLoadingUnit
+                                  }
+                                  onClick={handlePreviousMeasurementUnit}
                                   variant={"ghost"}
                                   type="button"
                                 >
                                   <IconArrowLeft />
                                 </Button>
                                 <span>
-                                  {page}/{totalPages}
+                                  {measurementUnitPage}/
+                                  {measurementUnitTotalPages}
                                 </span>
                                 <Button
                                   disabled={
-                                    page === totalPages ||
+                                    measurementUnitPage ===
+                                      measurementUnitTotalPages ||
                                     isLoadingUnit ||
-                                    totalPages === 0
+                                    measurementUnitTotalPages === 0
                                   }
                                   variant={"ghost"}
-                                  onClick={handleNext}
+                                  onClick={handleNextMeasurementUnit}
                                   type="button"
                                 >
                                   <IconArrowRight />
@@ -172,7 +155,9 @@ export const MeasurementUnitForm = ({
                                 <>
                                   {measurementUnits.map((unit) => (
                                     <SelectItem key={unit.id} value={unit.id}>
-                                      {unit.name} - {unit.unit}
+                                      {unit.name} - {unit.unit}{" "}
+                                      {unit.description &&
+                                        `(${unit.description})`}
                                     </SelectItem>
                                   ))}
                                 </>
@@ -198,28 +183,18 @@ export const MeasurementUnitForm = ({
             <Field>
               <FormField
                 control={form.control}
-                name="operator"
+                name={`sale_price`}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Operator</FormLabel>
+                    <FormLabel>Sale Price *</FormLabel>
                     <FormControl>
-                      <Select
-                        onValueChange={field.onChange}
-                        value={field.value ?? ""}
+                      <Input
+                        {...field}
+                        type="number"
+                        placeholder="eg: 3500"
+                        onChange={(e) => field.onChange(Number(e.target.value))}
                         disabled={isLoading}
-                      >
-                        <SelectTrigger className="w-full">
-                          <SelectValue placeholder="Select Operator (optional)" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value={Operator.MUTIPLY}>
-                            * Multiply
-                          </SelectItem>
-                          <SelectItem value={Operator.DIVIDE}>
-                            / Divide
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -229,18 +204,80 @@ export const MeasurementUnitForm = ({
             <Field>
               <FormField
                 control={form.control}
-                name="operation_value"
+                name={`purchase_price`}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Operation Value</FormLabel>
+                    <FormLabel>Purchase Price *</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="number"
+                        placeholder="eg: 3000"
+                        onChange={(e) => field.onChange(Number(e.target.value))}
+                        disabled={isLoading}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </Field>
+            <Field>
+              <FormField
+                control={form.control}
+                name={`quantityPerUnit`}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Quantity Per Unit *</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="number"
+                        placeholder="eg: 1 bottle = 1 quantity per unit"
+                        onChange={(e) => field.onChange(Number(e.target.value))}
+                        disabled={isLoading}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </Field>
+            <Field>
+              <FormField
+                control={form.control}
+                name={`low_stock_quantity`}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Low Stock Quantity</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="number"
+                        value={field.value ?? ""}
+                        placeholder="eg: 10"
+                        onChange={(e) => field.onChange(Number(e.target.value))}
+                        disabled={isLoading}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </Field>
+            <Field>
+              <FormField
+                control={form.control}
+                name={`sku`}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Sku </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
                         value={field.value ?? ""}
-                        placeholder="eg: 5 (optional)"
-                        type="number"
+                        placeholder="eg: COCA-Bot"
                         disabled={isLoading}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
                       />
                     </FormControl>
                     <FormMessage />
@@ -248,22 +285,19 @@ export const MeasurementUnitForm = ({
                 )}
               />
             </Field>
-          </FieldGroup>
-          <FieldGroup className="mt-4">
             <Field>
               <FormField
                 control={form.control}
-                name="description"
+                name={`barcode`}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Description</FormLabel>
+                    <FormLabel>Barcode</FormLabel>
                     <FormControl>
-                      <Textarea
+                      <Input
                         {...field}
                         value={field.value ?? ""}
-                        placeholder="eg: Description ( 1 Box  = 5 Pieces ) (optional)"
+                        placeholder="eg: Barcode---"
                         disabled={isLoading}
-                        className="max-h-lg"
                       />
                     </FormControl>
                     <FormMessage />
@@ -272,10 +306,13 @@ export const MeasurementUnitForm = ({
               />
             </Field>
           </FieldGroup>
-          <Button type="submit" disabled={isLoading} className="mt-2 w-full">
-            {isLoading ? <Spinner /> : <CircleFadingPlus />}
-            {submitLabel}
-          </Button>
+
+          <div className="flex items-center gap-3 mt-3">
+            <Button type="submit" disabled={isLoading} className=" flex-1">
+              {isLoading ? <Spinner /> : <CircleFadingPlus />}
+              {submitLabel}
+            </Button>
+          </div>
         </form>
       </Form>
     </div>

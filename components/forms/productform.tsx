@@ -107,6 +107,7 @@ export const ProductForm = ({
                       <Select
                         onValueChange={field.onChange}
                         value={field.value ?? ""}
+                        disabled={isLoading}
                       >
                         <SelectTrigger className="w-full">
                           <SelectValue placeholder="Select Unit " />
@@ -130,6 +131,7 @@ export const ProductForm = ({
                                 onClick={() => {
                                   field.onChange(undefined);
                                 }}
+                                type="button"
                               >
                                 <IconX size={20} />
                               </Button>
@@ -153,6 +155,7 @@ export const ProductForm = ({
                                   }
                                   onClick={handlePreviousMeasurementUnit}
                                   variant={"ghost"}
+                                  type="button"
                                 >
                                   <IconArrowLeft />
                                 </Button>
@@ -169,6 +172,7 @@ export const ProductForm = ({
                                   }
                                   variant={"ghost"}
                                   onClick={handleNextMeasurementUnit}
+                                  type="button"
                                 >
                                   <IconArrowRight />
                                 </Button>
@@ -212,6 +216,7 @@ export const ProductForm = ({
                       <Select
                         onValueChange={field.onChange}
                         value={field.value ?? ""}
+                        disabled={isLoading}
                       >
                         <SelectTrigger className="w-full">
                           <SelectValue placeholder="Select Brand " />
@@ -235,6 +240,7 @@ export const ProductForm = ({
                                 onClick={() => {
                                   field.onChange(undefined);
                                 }}
+                                type="button"
                               >
                                 <IconX size={20} />
                               </Button>
@@ -256,6 +262,7 @@ export const ProductForm = ({
                                   disabled={brandsPage === 1 || isLoadingBrands}
                                   onClick={handlePreviousBrand}
                                   variant={"ghost"}
+                                  type="button"
                                 >
                                   <IconArrowLeft />
                                 </Button>
@@ -270,6 +277,7 @@ export const ProductForm = ({
                                   }
                                   variant={"ghost"}
                                   onClick={handleNextBrand}
+                                  type="button"
                                 >
                                   <IconArrowRight />
                                 </Button>
@@ -314,6 +322,7 @@ export const ProductForm = ({
                       <Select
                         onValueChange={field.onChange}
                         value={field.value ?? ""}
+                        disabled={isLoading}
                       >
                         <SelectTrigger className="w-full">
                           <SelectValue placeholder="Select Category" />
@@ -337,6 +346,7 @@ export const ProductForm = ({
                                 onClick={() => {
                                   field.onChange(undefined);
                                 }}
+                                type="button"
                               >
                                 <IconX size={20} />
                               </Button>
@@ -360,6 +370,7 @@ export const ProductForm = ({
                                   }
                                   onClick={handlePreviousCategory}
                                   variant={"ghost"}
+                                  type="button"
                                 >
                                   <IconArrowLeft />
                                 </Button>
@@ -374,6 +385,7 @@ export const ProductForm = ({
                                   }
                                   variant={"ghost"}
                                   onClick={handleNextCategory}
+                                  type="button"
                                 >
                                   <IconArrowRight />
                                 </Button>

@@ -13,7 +13,27 @@ export interface Product {
   createdAt: Date;
   updatedAt: Date;
   deletedAt?: Date;
+
   brand: Brand;
   category: Category;
   baseUnit: MeasurementUnit;
+}
+
+export interface ProductVariant {
+  id: string;
+  productId: string;
+  variant_name: string;
+  saleUnitId: string;
+  quantityPerUnit: number;
+  sale_price: number;
+  purchase_price: number;
+  sku: string;
+  barcode: string;
+  low_stock_quantity?: number;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt?: Date;
+
+  product: Product;
+  saleUnit: MeasurementUnit;
 }

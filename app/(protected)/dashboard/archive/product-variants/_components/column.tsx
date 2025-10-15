@@ -1,16 +1,14 @@
 "use client";
 
 import { Checkbox } from "@/components/ui/checkbox";
-import { Product } from "@/types/product";
+import { ProductVariant } from "@/types/product";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArchiveProductCellAction } from "../../archive/products/_components/cell-action";
-import { ProductCellAction } from "./cell-action";
-import { ProductPriceDrawer } from "./productPriceDrawer";
+import { ArchiveProductVariantCellAction } from "./cell-action";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
-export const productColumns: ColumnDef<Product>[] = [
+export const productVariantArchiveColumns: ColumnDef<ProductVariant>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -32,25 +30,18 @@ export const productColumns: ColumnDef<Product>[] = [
     ),
   },
   {
-    accessorKey: "product_name",
+    accessorKey: "product",
     header: "Product Name",
-    cell: ({ row }) => <ProductPriceDrawer product={row.original} />,
+    cell: ({ row }) => row.original.product.product_name,
   },
+  { accessorKey: "sku", header: "SKU" },
+  { accessorKey: "variant_name", header: "Variant Name" },
   {
-    accessorKey: "brand",
-    header: "Brand",
-    cell: ({ row }) => row.original.brand.brand_name,
+    accessorKey: "saleUnit",
+    header: "Sale Unit",
+    cell: ({ row }) => row.original.saleUnit.name,
   },
-  {
-    accessorKey: "category",
-    header: "Category",
-    cell: ({ row }) => row.original.category.category_name,
-  },
-  {
-    accessorKey: "baseUnit",
-    header: "Base Unit",
-    cell: ({ row }) => row.original.baseUnit.name,
-  },
+
   { accessorKey: "description", header: "Description" },
   {
     header: "Date",
@@ -69,11 +60,7 @@ export const productColumns: ColumnDef<Product>[] = [
     header: "Actions",
     cell: ({ row }) => (
       <>
-        {row.original.deletedAt ? (
-          <ArchiveProductCellAction data={row.original} />
-        ) : (
-          <ProductCellAction data={row.original} />
-        )}
+        <ArchiveProductVariantCellAction data={row.original} />
       </>
     ),
   },
