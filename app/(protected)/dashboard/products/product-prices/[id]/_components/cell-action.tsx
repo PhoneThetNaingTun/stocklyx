@@ -8,30 +8,21 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
-import { useArchiveProductMutation } from "@/store/Apis/productApi";
-import { Product } from "@/types/product";
-import {
-  IconArchive,
-  IconCoin,
-  IconDotsVertical,
-  IconEdit,
-  IconEye,
-} from "@tabler/icons-react";
-import { useRouter } from "next/navigation";
+import { useArchiveProductVariantMutation } from "@/store/Apis/productVariantApi";
+import { ProductVariant } from "@/types/product";
+import { IconArchive, IconDotsVertical, IconEdit } from "@tabler/icons-react";
 import { useState } from "react";
-import { UpdateProductDialog } from "./UpdateProductDialog";
-import { NewProductVariantDialog } from "./product-variants/NewProductVariant";
+import { UpdateProductVariantDialog } from "../../../_components/product-variants/UpdateProductVariant";
 
 interface Props {
-  data: Product;
+  data: ProductVariant;
 }
 
-export const ProductCellAction = ({ data }: Props) => {
-  const router = useRouter();
+export const ProductVariantCellAction = ({ data }: Props) => {
   const [open, setOpen] = useState(false);
-  const [productVariantOpen, setproductVariantOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
-  const [Archive, { isLoading }] = useArchiveProductMutation();
+
+  const [Archive, { isLoading }] = useArchiveProductVariantMutation();
   const handleDelete = async () => {
     try {
       const responseData = await Archive({ id: data.id }).unwrap();
@@ -70,32 +61,21 @@ export const ProductCellAction = ({ data }: Props) => {
           <DropdownMenuItem onClick={() => setOpen(true)}>
             <IconEdit className="w-4 h-4" /> Edit
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setproductVariantOpen(true)}>
-            <IconCoin className="w-4 h-4" /> Add Price
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() =>
-              router.push(`/dashboard/products/product-prices/${data.id}`)
-            }
-          >
-            <IconEye className="w-4 h-4" /> View Price
-          </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setDeleteOpen(true)}>
             <IconArchive className="w-4 h-4" /> Archive
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <NewProductVariantDialog
-        open={productVariantOpen}
-        setOpen={setproductVariantOpen}
-        product={data}
-        showButton={false}
+
+      <UpdateProductVariantDialog
+        open={open}
+        setOpen={setOpen}
+        initialValue={data}
       />
-      <UpdateProductDialog open={open} setOpen={setOpen} initialValue={data} />
       <DeleteDialog
         open={deleteOpen}
         setOpen={setDeleteOpen}
-        title="Product"
+        title="Product Price"
         isLoading={isLoading}
         handleDelete={handleDelete}
         archive

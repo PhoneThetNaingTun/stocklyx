@@ -1,4 +1,5 @@
 import { DeleteDialog } from "@/components/delete-dialog";
+import { RestoreDialog } from "@/components/restore-dialog";
 import { showToast } from "@/components/toaster";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,38 +9,54 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
-import { useArchiveProductMutation } from "@/store/Apis/productApi";
-import { Product } from "@/types/product";
 import {
-  IconArchive,
-  IconCoin,
-  IconDotsVertical,
-  IconEdit,
-  IconEye,
-} from "@tabler/icons-react";
-import { useRouter } from "next/navigation";
+  useDeleteProductVariantMutation,
+  useRestoreProductVariantMutation,
+} from "@/store/Apis/productVariantApi";
+import { ProductVariant } from "@/types/product";
+import { IconDotsVertical, IconRestore, IconTrash } from "@tabler/icons-react";
 import { useState } from "react";
-import { UpdateProductDialog } from "./UpdateProductDialog";
-import { NewProductVariantDialog } from "./product-variants/NewProductVariant";
 
 interface Props {
-  data: Product;
+  data: ProductVariant;
 }
 
-export const ProductCellAction = ({ data }: Props) => {
-  const router = useRouter();
+export const ArchiveProductVariantCellAction = ({ data }: Props) => {
   const [open, setOpen] = useState(false);
-  const [productVariantOpen, setproductVariantOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
-  const [Archive, { isLoading }] = useArchiveProductMutation();
+  const [Delete, { isLoading }] = useDeleteProductVariantMutation();
+  const [Restore, { isLoading: RestoreLoading }] =
+    useRestoreProductVariantMutation();
   const handleDelete = async () => {
     try {
-      const responseData = await Archive({ id: data.id }).unwrap();
+      const responseData = await Delete({ id: data.id }).unwrap();
       showToast({
         title: responseData.message,
         type: "success",
       });
       setDeleteOpen(false);
+    } catch (error: any) {
+      if (error?.data?.message) {
+        showToast({
+          title: error.data.message[0],
+          type: "error",
+        });
+      } else {
+        showToast({
+          title: "Something went wrong!",
+          type: "error",
+        });
+      }
+    }
+  };
+  const handleRestore = async () => {
+    try {
+      const responseData = await Restore({ id: data.id }).unwrap();
+      showToast({
+        title: responseData.message,
+        type: "success",
+      });
+      setOpen(false);
     } catch (error: any) {
       if (error?.data?.message) {
         showToast({
@@ -68,37 +85,27 @@ export const ProductCellAction = ({ data }: Props) => {
           <DropdownMenuItem>Actions</DropdownMenuItem>
           <Separator />
           <DropdownMenuItem onClick={() => setOpen(true)}>
-            <IconEdit className="w-4 h-4" /> Edit
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setproductVariantOpen(true)}>
-            <IconCoin className="w-4 h-4" /> Add Price
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() =>
-              router.push(`/dashboard/products/product-prices/${data.id}`)
-            }
-          >
-            <IconEye className="w-4 h-4" /> View Price
+            <IconRestore className="w-4 h-4" /> Restore
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setDeleteOpen(true)}>
-            <IconArchive className="w-4 h-4" /> Archive
+            <IconTrash className="w-4 h-4" /> Delete
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <NewProductVariantDialog
-        open={productVariantOpen}
-        setOpen={setproductVariantOpen}
-        product={data}
-        showButton={false}
+      <RestoreDialog
+        open={open}
+        setOpen={setOpen}
+        title="Product Variant"
+        handleRestore={handleRestore}
+        isLoading={RestoreLoading}
       />
-      <UpdateProductDialog open={open} setOpen={setOpen} initialValue={data} />
       <DeleteDialog
         open={deleteOpen}
         setOpen={setDeleteOpen}
-        title="Product"
+        title="Product Variant"
         isLoading={isLoading}
         handleDelete={handleDelete}
-        archive
+        archive={false}
       />
     </div>
   );

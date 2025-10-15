@@ -43,6 +43,13 @@ export const productApi = apiSlice.injectEndpoints({
       },
       providesTags: ["Product"],
     }),
+    getOneProduct: builder.query({
+      query: (id) => ({
+        url: `product/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["Product"],
+    }),
     createProduct: builder.mutation({
       query: (payload) => ({
         url: "product/create",
@@ -113,6 +120,7 @@ export const productApi = apiSlice.injectEndpoints({
 export const {
   useGetAllProductsQuery,
   useGetAllArchivedProductsQuery,
+  useGetOneProductQuery,
   useCreateProductMutation,
   useUpdateProductMutation,
   useArchiveManyProductMutation,
