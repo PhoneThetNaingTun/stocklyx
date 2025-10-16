@@ -1,5 +1,6 @@
 "use client";
 
+import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Product } from "@/types/product";
 import { ColumnDef } from "@tanstack/react-table";
@@ -39,17 +40,23 @@ export const productColumns: ColumnDef<Product>[] = [
   {
     accessorKey: "brand",
     header: "Brand",
-    cell: ({ row }) => row.original.brand.brand_name,
+    cell: ({ row }) => (
+      <Badge variant={"outline"}>{row.original.brand.brand_name}</Badge>
+    ),
   },
   {
     accessorKey: "category",
     header: "Category",
-    cell: ({ row }) => row.original.category.category_name,
+    cell: ({ row }) => (
+      <Badge variant={"outline"}>{row.original.category.category_name}</Badge>
+    ),
   },
   {
     accessorKey: "baseUnit",
     header: "Base Unit",
-    cell: ({ row }) => row.original.baseUnit.name,
+    cell: ({ row }) => (
+      <Badge variant={"outline"}> {row.original.baseUnit.unit}</Badge>
+    ),
   },
   { accessorKey: "description", header: "Description" },
   {
